@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 interface IconData {
@@ -28,24 +28,27 @@ export default function IconCard({
   const [iconSvg, setIconSvg] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const loadIconSvg = async () => {
-    if (iconSvg || isLoading) return;
-
-    setIsLoading(true);
-    try {
-      const response = await fetch(
-        `https://api-svgstorm-production.up.railway.app/api/icons/${icon.name}`
-      );
-      const data = await response.json();
-      if (data.success) {
-        setIconSvg(data.data.svg_code);
+  // Load icon immediately when component mounts
+  useEffect(() => {
+    const loadIconSvg = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          `https://api-svgstorm-production.up.railway.app/api/icons/${icon.name}`
+        );
+        const data = await response.json();
+        if (data.success) {
+          setIconSvg(data.data.svg_code);
+        }
+      } catch (error) {
+        console.error("Error loading icon:", error);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error("Error loading icon:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
+
+    loadIconSvg();
+  }, [icon.name]);
 
   const handleClick = () => {
     onSelect(icon);
@@ -57,10 +60,7 @@ export default function IconCard({
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -5 }}
       whileTap={{ scale: 0.95 }}
-      onMouseEnter={() => {
-        setIsHovered(true);
-        loadIconSvg();
-      }}
+      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
       className={`relative group cursor-pointer bg-white rounded-2xl border-2 border-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden ${className}`}

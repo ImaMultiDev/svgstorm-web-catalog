@@ -16,7 +16,7 @@ interface IconData {
   updatedAt: string;
 }
 
-const API_BASE_URL = "https://api-svgstorm-production.up.railway.app";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function HomePage() {
   const [icons, setIcons] = useState<IconData[]>([]);
