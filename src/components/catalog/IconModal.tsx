@@ -2,16 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-interface IconData {
-  id: number;
-  name: string;
-  category?: string;
-  tags: string[];
-  description?: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import { IconData } from "@/interfaces";
 
 interface IconWithSVG extends IconData {
   svg_code: string;

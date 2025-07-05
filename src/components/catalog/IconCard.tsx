@@ -2,16 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-
-interface IconData {
-  id: number;
-  name: string;
-  category?: string;
-  tags: string[];
-  description?: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import { IconData } from "@/interfaces";
 
 interface IconCardProps {
   icon: IconData;
